@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ws="http://jax-ws.dev.java.net/spring/core" xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://jax-ws.dev.java.net/spring/core
+        http://jax-ws.dev.java.net/spring/core.xsd
+        http://jax-ws.dev.java.net/spring/servlet
+        http://jax-ws.dev.java.net/spring/servlet.xsd">
+
+	<wss:binding url="/hello" service="#HelloService">
+		<wss:service>
+			<ws:service bean="#HelloService" />
+		</wss:service>
+	</wss:binding>
+	
+	<wss:binding url="/goodbye">
+        <wss:service>
+            <ws:service bean="#GoodbyeService" />
+        </wss:service>
+    </wss:binding>
+
+    <bean id="Service" class="vn.com.vndirect.ussd.service.Service" />
+	<bean id="HelloService" class="vn.com.vndirect.ussd.service.HelloService" parent="Service" />
+	<bean id="GoodbyeService" class="vn.com.vndirect.ussd.service.GoodbyeService" parent="Service" />
+</beans>

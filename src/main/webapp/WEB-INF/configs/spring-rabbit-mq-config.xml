@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+       http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+
+	<rabbit:connection-factory id="AmqpConnectionFactory" />
+
+	<rabbit:template id="AmqpTemplate" connection-factory="AmqpConnectionFactory" message-converter="AmqpJsonMessageConverter" />
+	<rabbit:admin connection-factory="AmqpConnectionFactory" />
+
+	<bean id="AmqpConnectionFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<property name="addresses" value="${rabbitmq.addresses}" />
+		<property name="username" value="${rabbitmq.username}" />
+		<property name="password" value="${rabbitmq.password}" />
+		<property name="virtualHost" value="/" />
+	</bean>
+
+	<bean id="AmqpJsonMessageConverter" class="org.springframework.amqp.support.converter.JsonMessageConverter" />
+
+	<bean id="spring-amqp" class="amqp.spring.camel.component.SpringAMQPComponent">
+		<property name="connectionFactory" ref="AmqpConnectionFactory" />
+	</bean>
+
+</beans>
